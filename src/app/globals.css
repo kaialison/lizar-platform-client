@@ -1,8 +1,40 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+@layer base {
+  @font-face {
+    font-family: 'SF Pro Display';
+    src: local('SF Pro Display'),
+         local('SFProDisplay-Regular'),
+         local('-apple-system');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html, body {
+    @apply h-full p-0 m-0;
+  }
+
+  body {
+    @apply font-sf-pro bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto w-full max-w-[1440px];
+  }
+
+  .container-padding {
+    @apply px-4 md:px-6 lg:px-8;
+  }
 }
 
 @theme inline {
@@ -19,8 +51,19 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Additional utility classes */
+.f-inter-regular {
+  @apply font-sf-pro font-normal;
+}
+
+.f-inter-medium {
+  @apply font-sf-pro font-medium;
+}
+
+.f-inter-semibold {
+  @apply font-sf-pro font-semibold;
+}
+
+.f-inter-bold {
+  @apply font-sf-pro font-bold;
 }
