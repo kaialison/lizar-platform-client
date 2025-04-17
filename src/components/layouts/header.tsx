@@ -35,32 +35,68 @@ type HeaderItem = {
 
 type HeaderProps = {
     variant?: 'dark' | 'light';
+    defaultColorScheme?: 'dark' | 'light';
 };
 
-const Header = ({ variant: initialVariant }: HeaderProps): JSX.Element => {
+const Header = ({ 
+    variant: initialVariant, 
+    defaultColorScheme = 'dark' 
+}: HeaderProps): JSX.Element => {
     const { isOpen, onOpenChange } = useDisclosure();
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [variant, setVariant] = useState(initialVariant);
     const pathname = usePathname();
+    const [isScrolled, setIsScrolled] = useState(false);
 
-    // Xử lý variant của header dựa trên vị trí scroll và pathname
+    // Kiểm tra header scheme từ EmptyContent
+    const [headerScheme, setHeaderScheme] = useState(defaultColorScheme);
+
+    useEffect(() => {
+        const checkHeaderScheme = () => {
+            const emptyContent = document.querySelector('[data-header-scheme]');
+            if (emptyContent) {
+                const scheme = emptyContent.getAttribute('data-header-scheme') as 'dark' | 'light';
+                setHeaderScheme(scheme);
+            } else {
+                setHeaderScheme(defaultColorScheme);
+            }
+        };
+
+        checkHeaderScheme();
+        // Tạo một observer để theo dõi sự thay đổi của DOM
+        const observer = new MutationObserver(checkHeaderScheme);
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        return () => observer.disconnect();
+    }, [defaultColorScheme]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const isAtTop = window.scrollY === 0;
+            setIsScrolled(!isAtTop);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    // Xử lý variant của header dựa trên vị trí scroll
     useEffect(() => {
         const checkPosition = () => {
-            // Nếu menu mobile đang mở, luôn dùng light variant
             if (menuOpen) {
                 setVariant('light');
                 return;
             }
             
-            const isAtTop = window.scrollY === 0 && pathname === '/';
+            const isAtTop = window.scrollY === 0;
             setVariant(isAtTop ? initialVariant : 'light');
         };
 
         checkPosition();
         window.addEventListener('scroll', checkPosition);
         return () => window.removeEventListener('scroll', checkPosition);
-    }, [initialVariant, pathname, menuOpen]); // Thêm menuOpen vào dependencies
+    }, [initialVariant, menuOpen]);
 
     // Xử lý menu mobile
     const toggleMenu = () => {
@@ -71,7 +107,7 @@ const Header = ({ variant: initialVariant }: HeaderProps): JSX.Element => {
             setVariant('light');
         } else {
             // Khi đóng menu, kiểm tra lại điều kiện để set variant phù hợp
-            const isAtTop = window.scrollY === 0 && pathname === '/';
+            const isAtTop = window.scrollY === 0;
             setVariant(isAtTop ? initialVariant : 'light');
         }
     };
@@ -88,13 +124,13 @@ const Header = ({ variant: initialVariant }: HeaderProps): JSX.Element => {
 
     const headerItems: HeaderItem[] = useMemo(
         () => [
-            { name: "Về HappyLand", link: "#" },
-            { name: "Tiện ích sân", link: "#" },
-            { name: "Đánh giá", link: "#" },
-            { name: "Tin tức", link: "#" },
-            { name: "Sự kiện", link: "#" },
-            { name: "Blog", link: "#" },
-            { name: "Liên hệ", link: "#" },
+            { name: "Về HappyLand", link: "/about" },
+            { name: "Tiện ích sân", link: "/facilities" },
+            { name: "Đánh giá", link: "/reviews" },
+            { name: "Tin tức", link: "/news" },
+            { name: "Sự kiện", link: "/events" },
+            { name: "Blog", link: "/blog" },
+            { name: "Liên hệ", link: "/contact" },
         ],
         []
     );
@@ -110,7 +146,7 @@ const Header = ({ variant: initialVariant }: HeaderProps): JSX.Element => {
                     <div className="flex h-20 items-center">
                         <div className="flex w-full items-center justify-between">
                             <Link href="/" className="flex items-center gap-2">
-                                {variant === 'light' ? (
+                                {(variant === 'light' || (!variant && headerScheme === 'light')) ? (
                                     <img className="w-[177.5px] h-[40px]" src="/Logo-dark.svg" alt="HappyLand Pickleball" />
                                 ) : (
                                     <img className="w-[177.5px] h-[40px]" src="/Logo.svg" alt="HappyLand Pickleball" />
@@ -122,9 +158,8 @@ const Header = ({ variant: initialVariant }: HeaderProps): JSX.Element => {
                                         key={item.name}
                                         href={item.link}
                                         className={`text-md font-semibold ${
-                                            variant === 'dark' ? 'text-white' : 
-                                            variant === 'light' ? 'text-gray-600 hover:text-gray-900' : 
-                                            'text-white'
+                                            variant === 'dark' || (!variant && headerScheme === 'dark') ? 'text-white' : 
+                                            'text-gray-600 hover:text-gray-900'
                                         } transition-colors`}
                                     >
                                         {item.name}
@@ -137,9 +172,8 @@ const Header = ({ variant: initialVariant }: HeaderProps): JSX.Element => {
                             isIconOnly
                             variant="light"
                             className={`lg:hidden ${
-                                variant === 'dark' ? 'text-white' : 
-                                variant === 'light' ? 'text-primary-900 hover:text-gray-900' : 
-                                'text-white'
+                                variant === 'dark' || (!variant && headerScheme === 'dark') ? 'text-white' : 
+                                'text-primary-900 hover:text-gray-900'
                             }`}
                         >
                             {menuOpen ? (

@@ -17,7 +17,7 @@ export default function HeroSection() {
 
             <div className="container relative h-full flex flex-col justify-end sm:justify-center sm:pb-0 pb-16">
                 <div className="text-white/90 lg:w-2/3 w-full flex flex-col lg:gap-6 gap-4 ">
-                    <div className="lg:space-y-4 space-y-0 flex lg:block flex-col">
+                    <div className="lg:space-y-4 space-y-0 flex flex-col">
                         <span className="inline-block font-display text-sm lg:text-display-xs leading-display-xs font-medium text-white/90">
                             <span className="lg:inline hidden">Khám phá đam mê Pickleball tại</span>
                             <span className="lg:hidden inline">Ứng dụng Đặt sân Pickleball</span>

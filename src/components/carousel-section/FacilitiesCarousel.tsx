@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import CustomCarousel from "../slider/CustomCarousel";
 import { CarouselItem } from "@/types/carousel";
+import Slider from "react-slick";
 
 
 interface FacilitiesCarouselProps {
@@ -9,6 +10,8 @@ interface FacilitiesCarouselProps {
 }
 
 export default function FacilitiesCarousel({ items }: FacilitiesCarouselProps) {
+    const sliderRef = useRef<Slider>(null);
+
     const renderCarouselItem = (item: CarouselItem) => (
         <div className="px-4">
             <div className="flex flex-col gap-3">
@@ -62,7 +65,8 @@ export default function FacilitiesCarousel({ items }: FacilitiesCarouselProps) {
             items={items}
             settings={carouselSettings}
             isPaging={true}
-            isControlAbsolute={true}
+            isControlAbsolute={false}
+            ref={sliderRef}
             renderItem={renderCarouselItem}
         />
     );

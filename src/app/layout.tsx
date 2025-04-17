@@ -2,18 +2,20 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "EduTo Pickleball",
-  description: "Pickleball learning platform",
+  title: "HappyLand Pickleball",
+  description: "Hệ thống sân chơi Pickleball hàng đầu tại Việt Nam",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className='light'>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }

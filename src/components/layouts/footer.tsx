@@ -1,12 +1,39 @@
-'use client'
-
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Facebook, Youtube } from 'lucide-react';
+import { makeSrsRequest } from '@/app/makeSrsRequest';
+import { API_PATHS } from '@/constants/apis';
+import { PAGINATION_PARAMS } from '@/constants';
+import LocationList from './LocationList';
 
-const Footer = () => {
-    const FOOTER_ITEMS = [
+interface Location {
+    id: number;
+    address: string;
+    city: string;
+    googleMapsLink: string;
+}
+
+interface FooterItem {
+    title: string;
+    items: React.ReactNode[];
+}
+
+const Footer = async (): Promise<JSX.Element> => {
+    // Fetch locations from API
+    const params = {
+        ...PAGINATION_PARAMS,
+        orderBy: "id",
+        order: "asc",
+    };
+    const response = await makeSrsRequest({
+        path: API_PATHS.LOCATION.GET_LOCATION,
+        method: "GET",
+        params: params,
+    });
+    const location = (response.result.data as Location[]).sort((a, b) => a.id - b.id);
+
+    // Define footer items with proper typing
+    const FOOTER_ITEMS: FooterItem[] = [
         {
             title: "",
             items: [
@@ -127,17 +154,7 @@ const Footer = () => {
         },
         {
             title: "Cơ sở",
-            items: [
-                <p key="location-1" className="text-sm text-secondary-600">
-                    Cơ sở 1: Số 3 ngõ 454 Hoàng Hoa Thám, Ba Đình, Hà Nội
-                </p>,
-                <p key="location-2" className="text-sm text-secondary-600">
-                    Cơ sở 1: Số 3 ngõ 454 Hoàng Hoa Thám, Ba Đình, Hà Nội
-                </p>,
-                <p key="location-3" className="text-sm text-secondary-600">
-                    Cơ sở 1: Số 3 ngõ 454 Hoàng Hoa Thám, Ba Đình, Hà Nội
-                </p>
-            ]
+            items: [<LocationList key="location-list" locations={location || []} />]
         },
         {
             title: "",

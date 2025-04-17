@@ -7,8 +7,8 @@ export default function ReviewSection() {
         {
             id: 1,
             content: "Sân ở HappyLand siêu rộng, mặt sân mịn và sạch, ánh sáng buổi tối rất tốt. Không khí thì cực chill vì bao quanh nhiều cây xanh. Đi chơi mà như đi nghỉ dưỡng!",
-            avatar: "https://d1j8r0kxyu9tj8.cloudfront.net/files/NXJFkNU1p32mrFyQqdQHEmJYO9uc353CtlhjnUv3.png",
-            name: "Hữu Đăng",
+            avatar: "https://d1j8r0kxyu9tj8.cloudfront.net/files/0oAWM1g4ldNCSBc1nqEF8Y6bpeHmLjgxr1pcHel5.jpg",
+            name: "Quốc Quý",
             rating: 5,
         },
         {

@@ -119,11 +119,11 @@ const CustomCarousel = forwardRef<Slider, CustomCarouselProps>(({
 
     const containerControl = isControlAbsolute
         ? 'absolute top-0 start-0 w-full h-full flex justify-between items-center pointer-events-none'
-        : 'flex justify-center lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:w-full lg:justify-between gap-5 mt-10 lg:mt-0 lg:px-4';
+        : 'flex justify-center gap-4 mt-6 lg:mt-0 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:start-0 lg:end-0 lg:w-full lg:justify-between lg:px-4 lg:gap-0 z-10';
 
     const renderPaging = () => {
         return (
-            <div className="flex justify-center gap-3 mt-10">
+            <div className="flex justify-center gap-3 mt-6 lg:mt-10">
                 {items.map((_, index) => (
                     <button
                         key={index}
@@ -138,34 +138,40 @@ const CustomCarousel = forwardRef<Slider, CustomCarouselProps>(({
 
     return (
         <div className="slider-container relative">
-            <Slider ref={ref} {...sliderSettings}>
-                {items.map((item) => renderItem(item))}
-            </Slider>
+            <div className="relative">
+                <Slider ref={ref} {...sliderSettings}>
+                    {items.map((item, index) => (
+                        <div key={index}>
+                            {renderItem(item)}
+                        </div>
+                    ))}
+                </Slider>
 
-            {!isControlAbsolute && (
-                <div className={containerControl}>
-                    <Button
-                        isIconOnly
-                        onClick={previous}
-                        isDisabled={isPrevDisabled}
-                        className={`w-10 h-10 rounded-full bg-white shadow-md transition-opacity border border-gray-200 ${
-                            isPrevDisabled ? 'opacity-50' : 'hover:bg-gray-50'
-                        }`}
-                    >
-                        <CaretLeft size={20} weight="bold" />
-                    </Button>
-                    <Button
-                        isIconOnly
-                        onClick={next}
-                        isDisabled={isNextDisabled}
-                        className={`w-10 h-10 rounded-full bg-white shadow-md transition-opacity border border-gray-200 ${
-                            isNextDisabled ? 'opacity-50' : 'hover:bg-gray-50'
-                        }`}
-                    >
-                        <CaretRight size={20} weight="bold" />
-                    </Button>
-                </div>
-            )}
+                {!isControlAbsolute && (
+                    <div className={containerControl}>
+                        <Button
+                            isIconOnly
+                            onClick={previous}
+                            isDisabled={isPrevDisabled}
+                            className={`w-10 h-10 rounded-full bg-white shadow-md transition-opacity border border-gray-200 pointer-events-auto ${
+                                isPrevDisabled ? 'opacity-50' : 'hover:bg-gray-50'
+                            }`}
+                        >
+                            <CaretLeft size={20} weight="bold" />
+                        </Button>
+                        <Button
+                            isIconOnly
+                            onClick={next}
+                            isDisabled={isNextDisabled}
+                            className={`w-10 h-10 rounded-full bg-white shadow-md transition-opacity border border-gray-200 pointer-events-auto ${
+                                isNextDisabled ? 'opacity-50' : 'hover:bg-gray-50'
+                            }`}
+                        >
+                            <CaretRight size={20} weight="bold" />
+                        </Button>
+                    </div>
+                )}
+            </div>
 
             {isPaging && renderPaging()}
         </div>
