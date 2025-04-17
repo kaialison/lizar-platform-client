@@ -22,7 +22,7 @@ export async function makeSrsRequest({
     };
 
     // Make the request using
-      url = `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+      url = `https://api-pickleball.butcher.io.vn/api/v1${path}`;
 
 
     const response = await axios({

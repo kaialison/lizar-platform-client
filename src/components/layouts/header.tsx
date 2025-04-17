@@ -3,16 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import {
     useDisclosure,
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownSection,
-    DropdownItem,
     Button,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    Avatar,
 } from "@nextui-org/react";
 
 import { Link } from "@nextui-org/link";
