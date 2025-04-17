@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "HappyLand Pickleball",
   description: "Hệ thống sân chơi Pickleball hàng đầu tại Việt Nam",
+  icons: {
+    icon: "/favicon.svg",
+  },
+
 };
 
 export default function RootLayout({

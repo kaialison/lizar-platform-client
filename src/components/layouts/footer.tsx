@@ -30,7 +30,7 @@ const Footer = async (): Promise<JSX.Element> => {
         method: "GET",
         params: params,
     });
-    const location = (response.result.data as Location[]).sort((a, b) => a.id - b.id);
+    const location = (response?.result?.data as Location[])?.sort((a, b) => a.id - b.id);
 
     // Define footer items with proper typing
     const FOOTER_ITEMS: FooterItem[] = [
@@ -52,9 +52,12 @@ const Footer = async (): Promise<JSX.Element> => {
                     </div>
 
                     <div>
-                        <div className="flex gap-4 justify-center mt-2">
+                        <div className="mt-2">
+                        <div className="font-bold text-md">Tải app tại</div>
+
+                            <div className="flex gap-4">
                             <Link
-                                href="https://apps.apple.com"
+                                href="https://apps.apple.com/vn/app/happyland-pickleball/id6742907373"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="transition-transform hover:scale-105"
@@ -66,7 +69,7 @@ const Footer = async (): Promise<JSX.Element> => {
                                 />
                             </Link>
                             <Link
-                                href="https://play.google.com"
+                                href="https://play.google.com/store/apps/details?id=asia.eduto.happylandpickleball&pcampaignid=web_share"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="transition-transform hover:scale-105"
@@ -77,9 +80,32 @@ const Footer = async (): Promise<JSX.Element> => {
                                     className="h-10 md:h-12"
                                 />
                             </Link>
+                            </div>
                         </div>
                     </div>
 
+
+                </div>
+            ]
+        },
+        {
+            title: "Thông tin liên hệ",
+            items: [
+                <div className='space-y-5'>
+                    <div className="space-y-2">
+                        <div key="opening-hours" className="flex items-center gap-3">
+                            <img src='/icons/clock-icon.svg' />
+                            <span className="text-sm">Giờ mở cửa: 5h00 - 23h00</span>
+                        </div>
+                        <div key="email" className="flex items-center gap-3">
+                            <img src='/icons/mail-icon.svg' />
+                            <span className="text-sm">Email: customersupport@theenglishcoach.vn</span>
+                        </div>
+                        <div key="phone" className="flex items-center gap-3">
+                            <img src='/icons/phone-icon.svg' />
+                            <span className="text-sm">Hotline: 0839618386</span>
+                        </div>
+                    </div>
                     {/* Social Links */}
                     <div className="space-y-2">
                         <div className="font-bold text-md">Kết nối với chúng tôi</div>
@@ -122,6 +148,10 @@ const Footer = async (): Promise<JSX.Element> => {
             ]
         },
         {
+            title: "Cơ sở",
+            items: [<LocationList key="location-list" locations={location || []} />]
+        },
+        {
             title: "Về chúng tôi",
             items: [
                 <Link href="#" key="news" className="block text-sm text-secondary-600">
@@ -136,42 +166,43 @@ const Footer = async (): Promise<JSX.Element> => {
             ]
         },
         {
-            title: "Thông tin liên hệ",
-            items: [
-                <div key="opening-hours" className="flex items-center gap-3">
-                    <img src='/icons/clock-icon.svg' />
-                    <span className="text-sm">Giờ mở cửa: 5h00 - 23h00</span>
-                </div>,
-                <div key="email" className="flex items-center gap-3">
-                    <img src='/icons/mail-icon.svg' />
-                    <span className="text-sm">Email: customersupport@theenglishcoach.vn</span>
-                </div>,
-                <div key="phone" className="flex items-center gap-3">
-                    <img src='/icons/phone-icon.svg' />
-                    <span className="text-sm">Hotline: 0839618386</span>
-                </div>
-            ]
-        },
-        {
-            title: "Cơ sở",
-            items: [<LocationList key="location-list" locations={location || []} />]
-        },
-        {
             title: "",
             items: [
-                <p key="copyright" className="text-sm font-semibold">
-                    Copyright © 2025 - Bản quyền thuộc về HappyLand
-                </p>
+                <div className="flex items-center justify-between">
+                    <p key="copyright" className="text-sm font-semibold">
+                        Copyright © 2025 - Bản quyền thuộc về HappyLand
+                    </p>
+                    <div className="flex items-center gap-4">
+                        <Link
+                            href="https://www.eduto.asia/en/happyland-pickleball-security-policy"
+                            rel="noopener noreferrer"
+                            className="text-sm text-secondary-700">
+                            Chính sách bảo mật
+                        </Link>
+                        <Link
+                            href="https://www.eduto.asia/en/dieu-khoan-su-dung-cho-ung-dung-happyland-pickleball"
+                            rel="noopener noreferrer"
+                            className="text-sm text-secondary-700"
+                        >
+                            Điều khoản sử dụng
+                        </Link>
+                    </div>
+                </div>
             ]
         }
     ];
 
     return (
-        <footer className="bg-[#F5F5F5] lg:py-12  py-10 lg:px-14 md:px-7 px-5 pb-6">
+        <footer className="bg-[#F5F5F5] lg:py-12 py-10 lg:px-14 md:px-7 px-5 pb-6">
             <div className="max-w-[1230px] mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
                     {FOOTER_ITEMS.slice(0, -1).map((footerItem: any, index: number) => (
-                        <div key={index}>
+                        <div key={index} className={`
+                            ${index === 0 ? 'lg:col-span-3' : ''} 
+                            ${index === 1 ? 'lg:col-span-4' : ''}
+                            ${index === 2 ? 'lg:col-span-3' : ''}
+                            ${index === 3 ? 'lg:col-span-2' : ''}
+                        `}>
                             <div className="flex flex-col gap-4">
                                 {footerItem?.title && (
                                     <div className="font-bold text-md">{footerItem?.title}</div>

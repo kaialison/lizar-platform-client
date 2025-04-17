@@ -17,7 +17,7 @@ interface LocationListProps {
 const LocationList = ({ locations }: LocationListProps) => {
     const { setSelectedMapUrl, setIsLoading } = useLocationStore();
 
-    const handleLocationClick = async (location: Location) => {
+    const handleLocationClick =  (location: Location) => {
         setIsLoading(true);
         const mapUrl = location.googleMapsLink.replace('maps/place', 'maps/embed') + '&output=embed';
         setSelectedMapUrl(mapUrl);

@@ -44,7 +44,7 @@ export default function AppBanner() {
                                     </div>
                                     <div className="flex gap-4 justify-center mt-2">
                                         <Link
-                                            href="https://apps.apple.com"
+                                            href="https://apps.apple.com/vn/app/happyland-pickleball/id6742907373"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="transition-transform hover:scale-105"
@@ -56,7 +56,7 @@ export default function AppBanner() {
                                             />
                                         </Link>
                                         <Link
-                                            href="https://play.google.com"
+                                            href="https://play.google.com/store/apps/details?id=asia.eduto.happylandpickleball&pcampaignid=web_share"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="transition-transform hover:scale-105"

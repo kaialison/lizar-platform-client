@@ -1,7 +1,23 @@
-import { Button } from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
 import Image from "next/image";
 
 export default function HeroSection() {
+    const getStoreUrl = () => {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const platform = navigator.platform.toLowerCase();
+        
+        // Check for iOS devices
+        const isIOS = /iphone|ipad|ipod/.test(userAgent);
+        // Check for macOS
+        const isMacOS = /mac/.test(platform);
+        // If either iOS or macOS, return App Store link
+        const isAppleDevice = isIOS || isMacOS;
+        
+        return isAppleDevice
+            ? 'https://apps.apple.com/vn/app/happyland-pickleball/id6742907373'
+            : 'https://play.google.com/store/apps/details?id=asia.eduto.happylandpickleball&pcampaignid=web_share';
+    };
+
     return (
         <section className="relative h-screen">
             <div className="absolute inset-0">
@@ -26,15 +42,16 @@ export default function HeroSection() {
                             HAPPYLAND PICKLEBALL
                         </span>
                     </div>
-                    <p className="text-sm lg:text-md leading-relaxed lg:leading-text-md text-white font-normal">
+                    <p className="text-md leading-relaxed lg:leading-text-md text-white font-normal">
                         HappyLand Pickleball hướng đến trở thành hệ thống sân chơi hàng đầu tại Việt Nam,
                         mang đến trải nghiệm thể thao chuẩn quốc tế và góp phần phát triển phong trào Pickleball trên toàn quốc.
                     </p>
                     <div className="flex gap-4">
-                        <Button
-                            className="bg-white text-black font-medium px-4"
-                            size="lg"
-                            radius="md"
+                        <Link
+                            className="bg-white text-black font-medium px-4 py-2 rounded-md inline-flex items-center justify-center"
+                            href={getStoreUrl()}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             <div className="flex items-center justify-center gap-2">
                                 <div className="flex items-center gap-2">
@@ -44,7 +61,7 @@ export default function HeroSection() {
                                 <span className="text-secondary-600 font-semibold text-sm border-l-2 border-l-app-border-success ps-2 lg:inline hidden">Đặt lịch ngay</span>
                                 <span className="text-secondary-600 font-semibold text-sm border-l-2 border-l-app-border-success ps-2 lg:hidden inline">Tải ứng dụng ngay</span>
                             </div>
-                        </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

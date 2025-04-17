@@ -44,6 +44,7 @@ const Header = ({
     const [headerScheme, setHeaderScheme] = useState(defaultColorScheme);
 
     useEffect(() => {
+        // Immediate check on mount and route change
         const checkHeaderScheme = () => {
             const emptyContent = document.querySelector('[data-header-scheme]');
             if (emptyContent) {
@@ -54,13 +55,20 @@ const Header = ({
             }
         };
 
+        // Run immediately
         checkHeaderScheme();
-        // Tạo một observer để theo dõi sự thay đổi của DOM
-        const observer = new MutationObserver(checkHeaderScheme);
-        observer.observe(document.body, { childList: true, subtree: true });
 
-        return () => observer.disconnect();
-    }, [defaultColorScheme]);
+        // Also run on next tick to catch any React hydration updates
+        const immediateCheck = setTimeout(checkHeaderScheme, 0);
+        
+        // Run again after a short delay to catch any lazy-loaded content
+        const delayedCheck = setTimeout(checkHeaderScheme, 50);
+
+        return () => {
+            clearTimeout(immediateCheck);
+            clearTimeout(delayedCheck);
+        };
+    }, [defaultColorScheme, pathname]); // Add pathname dependency to re-run on route changes
 
     useEffect(() => {
         const handleScroll = () => {
@@ -111,7 +119,23 @@ const Header = ({
         if (isOpen) {
             setActiveDropdown(null);
         }
-    }, [isOpen]);
+    }, [menuOpen]);
+
+    // Control body scroll when mobile menu is open
+    useEffect(() => {
+        if (menuOpen) {
+            document.body.style.overflow = 'hidden';
+            document.body.style.height = '100vh';
+        } else {
+            document.body.style.overflow = 'unset';
+            document.body.style.height = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.body.style.height = 'auto';
+        };
+    }, [menuOpen]);
 
     const headerItems: HeaderItem[] = useMemo(
         () => [
@@ -129,7 +153,7 @@ const Header = ({
     return (
         <header className="fixed top-0 z-40 w-full transition-colors duration-200">
             <div className={`border-b ${
-                variant === 'light' ? 'bg-white border-gray-200' : 
+                variant === 'light' ? `${menuOpen ? 'bg-white' : 'bg-white/70'} border-gray-200` : 
                 variant === 'dark' ? 'bg-black border-gray-800' : 
                 'border-transparent'
             }`}>
@@ -150,7 +174,7 @@ const Header = ({
                                         href={item.link}
                                         className={`text-md font-semibold ${
                                             variant === 'dark' || (!variant && headerScheme === 'dark') ? 'text-white' : 
-                                            'text-gray-600 hover:text-gray-900'
+                                            'text-gray-900'
                                         } transition-colors`}
                                     >
                                         {item.name}
@@ -170,7 +194,7 @@ const Header = ({
                             {menuOpen ? (
                                 <X size={24} weight="bold" className="transition-transform duration-200" />
                             ) : (
-                                <List size={24} className="transition-transform duration-200" />
+                                <List size={24} weight="bold" className="transition-transform duration-200" />
                             )}
                         </Button>
                     </div>
@@ -179,8 +203,8 @@ const Header = ({
 
             {/* Mobile menu */}
             {menuOpen && (
-                <div className="lg:hidden bg-white min-h-screen">
-                    <nav className="container py-4">
+                <div className="lg:hidden fixed inset-x-0 bottom-0 top-20 bg-white overflow-y-auto">
+                    <nav className="container py-4 h-full">
                         {headerItems.map((item) => (
                             <Link
                                 key={item.name}

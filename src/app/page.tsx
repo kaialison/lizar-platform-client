@@ -14,8 +14,7 @@ export default async function Home() {
     method: "GET",
     params: params,
   });
-  locationRes = response.result;
-  console.log("LOCAtIONNNNNN", locationRes);
+  locationRes = response?.result;
   return (
     <SsrLayout>
       <HomePage location={locationRes} />
