@@ -74,8 +74,6 @@ export default function LocationSection({ location }: LocationSectionProps) {
         selectedLocationId,
         setSelectedLocationId
     } = useLocationStore();
-
-    console.log("LOCATIONNNNN", location);
     
     // Process location data from props
     useEffect(() => {

@@ -66,21 +66,15 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
 
   // Update map center and zoom when selected location changes
   useEffect(() => {
-    console.log("🚩 LeafletMap useEffect - locations:", locations);
-    console.log("🚩 LeafletMap useEffect - selectedLocationId:", selectedLocationId);
-    
     if (locations.length === 0) {
-      console.log("🚩 No locations available");
       return;
     }
 
     // If a location is selected, center on it
     if (selectedLocationId !== null) {
       const selectedLocation = locations.find(loc => loc.id === selectedLocationId);
-      console.log("🚩 Selected location:", selectedLocation);
       
       if (selectedLocation && selectedLocation.latitude && selectedLocation.longitude) {
-        console.log(`🚩 Centering on selected location: lat=${selectedLocation.latitude}, lng=${selectedLocation.longitude}`);
         setMapCenter([selectedLocation.latitude, selectedLocation.longitude]);
         setMapZoom(15);
         return;
@@ -95,17 +89,13 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
       !isNaN(Number(loc.longitude))
     );
     
-    console.log("🚩 Valid locations count:", validLocations.length);
-    console.log("🚩 Valid locations:", validLocations);
     
     if (validLocations.length === 0) {
-      console.log("🚩 No valid locations with coordinates");
       return;
     }
 
     if (validLocations.length === 1) {
       const loc = validLocations[0];
-      console.log(`🚩 Single location, centering on: lat=${loc.latitude}, lng=${loc.longitude}`);
       setMapCenter([Number(loc.latitude), Number(loc.longitude)]);
       setMapZoom(15);
     } else {
@@ -121,7 +111,6 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
       const avgLat = totalLat / validLocations.length;
       const avgLng = totalLng / validLocations.length;
       
-      console.log(`🚩 Multiple locations, centering on average: lat=${avgLat}, lng=${avgLng}`);
       setMapCenter([avgLat, avgLng]);
       setMapZoom(11); // Zoom out a bit to show multiple locations
     }
@@ -140,14 +129,12 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
     !isNaN(Number(loc.longitude))
   );
 
-  console.log("📍 Valid locations for rendering:", validLocations.length);
   
   // Get the selected location if it exists
   const selectedLocation = selectedLocationId !== null
     ? validLocations.find(loc => loc.id === selectedLocationId)
     : null;
 
-  console.log("📍 Selected location:", selectedLocation);
   
   // If no valid locations at all, show message
   if (validLocations.length === 0) {
@@ -162,7 +149,6 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
   // But use selectedLocation for centering if available
   const locationsToDisplay = validLocations;
 
-  console.log("🚩 Rendering map with center:", mapCenter, "and zoom:", mapZoom);
   
   return (
     <MapContainer 
@@ -186,7 +172,6 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
             click: () => {
               if (onMarkerClick) {
                 onMarkerClick(location.id);
-                console.log(`📍 Marker clicked for location ${location.id}`);
               }
             }
           }}
