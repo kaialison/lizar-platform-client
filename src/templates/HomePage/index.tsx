@@ -14,7 +14,7 @@ import { getLocationApi } from "@/service/api/complex";
 export default function HomePage({
   location
 }: {
-  location: any;
+  location: any
 }) {
 
   return (
@@ -22,7 +22,7 @@ export default function HomePage({
       <HeroSection />
       <IntroductionSection />
       <CarouselSection />
-      <LocationSection /> 
+      <LocationSection location={location?.data} /> 
       <ReviewSection />
       <AppIntroDuctionSection />
     </div>
