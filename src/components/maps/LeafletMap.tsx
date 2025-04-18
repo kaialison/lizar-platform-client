@@ -159,8 +159,9 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
       key={`map-${validLocations.length}-${mapCenter[0]}-${mapCenter[1]}`}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' as any}
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        attribution={'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'}
+        maxZoom={19}
       />
       <ChangeView center={mapCenter} zoom={mapZoom} />
       
@@ -176,7 +177,7 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
             }
           }}
         >
-          <Tooltip permanent={false} direction="top" className="rounded-xl border-none">
+          <Tooltip permanent={false} direction="top" className="rounded-xl border-none bg-white shadow-lg">
             <div className="text-sm">
               <p className="font-semibold">{location.name || `Cơ sở ${location.id}`}</p>
               <p>{location.address}</p>

@@ -151,7 +151,7 @@ const Header = ({
     return (
         <header className="fixed top-0 z-40 w-full transition-colors duration-200 ">
             <div className={`border-b ${
-                variant === 'light' ? `${menuOpen ? 'bg-white' : 'bg-white/70'} border-gray-200` : 
+                variant === 'light' ? `${menuOpen ? 'bg-white' : 'bg-white/70 backdrop-blur-md'} border-gray-200` : 
                 variant === 'dark' ? 'bg-black border-gray-800' : 
                 'border-transparent'
             }`}>
