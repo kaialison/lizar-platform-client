@@ -1,22 +1,31 @@
 import { Link } from "@nextui-org/react";
 import Image from "next/image";
 
+import { useEffect, useState } from 'react';
+
 export default function HeroSection() {
-    const getStoreUrl = () => {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const platform = navigator.platform.toLowerCase();
-        
-        // Check for iOS devices
-        const isIOS = /iphone|ipad|ipod/.test(userAgent);
-        // Check for macOS
-        const isMacOS = /mac/.test(platform);
-        // If either iOS or macOS, return App Store link
-        const isAppleDevice = isIOS || isMacOS;
-        
-        return isAppleDevice
-            ? 'https://apps.apple.com/vn/app/happyland-pickleball/id6742907373'
-            : 'https://play.google.com/store/apps/details?id=asia.eduto.happylandpickleball&pcampaignid=web_share';
-    };
+    const [storeUrl, setStoreUrl] = useState('https://play.google.com/store/apps/details?id=asia.eduto.happylandpickleball&pcampaignid=web_share');
+    
+    // Only run navigator code on client side
+    useEffect(() => {
+        if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const platform = navigator.platform.toLowerCase();
+            
+            // Check for iOS devices
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            // Check for macOS
+            const isMacOS = /mac/.test(platform);
+            // If either iOS or macOS, return App Store link
+            const isAppleDevice = isIOS || isMacOS;
+            
+            setStoreUrl(isAppleDevice
+                ? 'https://apps.apple.com/vn/app/happyland-pickleball/id6742907373'
+                : 'https://play.google.com/store/apps/details?id=asia.eduto.happylandpickleball&pcampaignid=web_share');
+        }
+    }, []);
+    
+    const getStoreUrl = () => storeUrl;
 
     return (
         <section className="relative h-screen">
