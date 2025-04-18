@@ -162,7 +162,7 @@ export default function LocationSection({ location }: LocationSectionProps) {
     };
     
     return (
-        <section id="location-section" className="lg:py-20 md:py-16 py-10 bg-[#F7FAF9] overflow-hidden">
+        <section id="location-section" className="z-1 lg:py-20 md:py-16 py-10 bg-[#F7FAF9] overflow-hidden">
             <div className="container px-4 md:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 lg:gap-10">
                     <div className="grid grid-cols-1 text-center gap-2 md:gap-3">

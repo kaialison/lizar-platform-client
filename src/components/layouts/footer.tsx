@@ -168,7 +168,7 @@ const Footer = async (): Promise<JSX.Element> => {
         {
             title: "",
             items: [
-                <div className="flex items-center justify-between">
+                <div className="lg:flex items-center justify-between">
                     <p key="copyright" className="text-sm font-semibold">
                         Copyright © 2025 - Bản quyền thuộc về HappyLand
                     </p>

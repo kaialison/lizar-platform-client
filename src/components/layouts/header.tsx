@@ -7,9 +7,7 @@ import {
 } from "@nextui-org/react";
 
 import { Link } from "@nextui-org/link";
-import { CaretDown, List, SignOut, UserCircle, X } from "@phosphor-icons/react";
-import { groupBy, objectToArray } from "@/utils/kits";
-import { ROUTE_PATH } from "@/utils/route";
+import { List, X } from "@phosphor-icons/react";
 
 type HeaderItem = {
     name: string;
@@ -151,7 +149,7 @@ const Header = ({
     );
 
     return (
-        <header className="fixed top-0 z-40 w-full transition-colors duration-200">
+        <header className="fixed top-0 z-40 w-full transition-colors duration-200 ">
             <div className={`border-b ${
                 variant === 'light' ? `${menuOpen ? 'bg-white' : 'bg-white/70'} border-gray-200` : 
                 variant === 'dark' ? 'bg-black border-gray-800' : 

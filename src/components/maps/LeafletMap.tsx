@@ -48,7 +48,7 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
         iconRetinaUrl: '/icons/map-pin.svg',
         iconUrl: '/icons/map-pin.svg',
         shadowUrl: '',
-        iconSize: [32, 32],
+        iconSize: [64, 64],
         iconAnchor: [16, 32],
         tooltipAnchor: [0, -20],
       });
