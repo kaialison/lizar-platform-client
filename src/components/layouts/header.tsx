@@ -66,11 +66,12 @@ const Header = ({
             clearTimeout(immediateCheck);
             clearTimeout(delayedCheck);
         };
-    }, [defaultColorScheme, pathname]); // Add pathname dependency to re-run on route changes
+    }, [defaultColorScheme, pathname]);
+
 
     useEffect(() => {
         const handleScroll = () => {
-            const isAtTop = window.scrollY === 0;
+            const isAtTop = window.scrollY === 0 && pathname === '/';
             setIsScrolled(!isAtTop);
         };
 
@@ -78,7 +79,6 @@ const Header = ({
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Xử lý variant của header dựa trên vị trí scroll
     useEffect(() => {
         const checkPosition = () => {
             if (menuOpen) {
@@ -104,7 +104,7 @@ const Header = ({
             setVariant('light');
         } else {
             // Khi đóng menu, kiểm tra lại điều kiện để set variant phù hợp
-            const isAtTop = window.scrollY === 0;
+            const isAtTop = window.scrollY === 0 && pathname === '/';
             setVariant(isAtTop ? initialVariant : 'light');
         }
     };

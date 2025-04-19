@@ -178,7 +178,7 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
           }}
         >
           <Tooltip permanent={false} direction="top" className="rounded-xl border-none bg-white shadow-lg">
-            <div className="text-sm">
+            <div className="lg:text-sm text-xs">
               <p className="font-semibold">{location.name || `Cơ sở ${location.id}`}</p>
               <p>{location.address}</p>
               {location.city && <p>{location.city}</p>}
