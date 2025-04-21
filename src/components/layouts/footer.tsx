@@ -31,7 +31,12 @@ const Footer = async (): Promise<JSX.Element> => {
         params: params,
     });
     const location = (response?.result?.data as Location[])?.sort((a, b) => a.id - b.id);
-
+    const socialUrl = {
+        facebook: "https://www.facebook.com/happylandpickleball",
+        tiktok: "www.tiktok.com/@happyland.pickleball",
+        instagram: "https://www.instagram.com/happyland.pickball/",
+        youtube: "https://www.youtube.com/@HappylandPickleball",
+    }
     // Define footer items with proper typing
     const FOOTER_ITEMS: FooterItem[] = [
         {
@@ -99,7 +104,7 @@ const Footer = async (): Promise<JSX.Element> => {
                         </div>
                         <div key="email" className="flex items-center gap-3">
                             <img src='/icons/mail-icon.svg' />
-                            <span className="text-sm">Email: customersupport@theenglishcoach.vn</span>
+                            <span className="text-sm">Email: hhkvpjsc@gmail.com</span>
                         </div>
                         <div key="phone" className="flex items-center gap-3">
                             <img src='/icons/phone-icon.svg' />
@@ -110,7 +115,7 @@ const Footer = async (): Promise<JSX.Element> => {
                     <div className="space-y-2">
                         <div className="font-bold text-md">Kết nối với chúng tôi</div>
                         <div className="flex items-center gap-4">
-                            <Link href="#" className="w-8 h-8">
+                            <Link href={socialUrl.facebook} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                                 <Image
                                     src="/icons/facebook.svg"
                                     alt="Facebook"
@@ -118,7 +123,7 @@ const Footer = async (): Promise<JSX.Element> => {
                                     height={24}
                                 />
                             </Link>
-                            <Link href="#" className="w-8 h-8">
+                            <Link href={`https://${socialUrl.tiktok}`} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                                 <Image
                                     src="/icons/tiktok.svg"
                                     alt="TikTok"
@@ -126,7 +131,7 @@ const Footer = async (): Promise<JSX.Element> => {
                                     height={24}
                                 />
                             </Link>
-                            <Link href="#" className="w-8 h-8">
+                            <Link href={socialUrl.instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                                 <Image
                                     src="/icons/instagram.svg"
                                     alt="Instagram"
@@ -134,7 +139,7 @@ const Footer = async (): Promise<JSX.Element> => {
                                     height={24}
                                 />
                             </Link>
-                            <Link href="#" className="w-8 h-8">
+                            <Link href={socialUrl.youtube} target="_blank" rel="noopener noreferrer" className="w-8 h-8">
                                 <Image
                                     src="/icons/youtube.svg"
                                     alt="Youtube"

@@ -29,10 +29,10 @@ export default function IntroductionSection() {
                             <iframe 
                                 width="100%" 
                                 height="100%" 
-                                src="https://www.youtube.com/embed/kqLRRNOpe8U?si=hE-MfhkMnUhsLlSg"                                 title="YouTube video player" 
+                                src="https://drive.google.com/file/d/1mWn_Updd76jyx7dGX6SstXUP311VLRbg/preview"
+                                title="Video player" 
                                 frameBorder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                referrerPolicy="strict-origin-when-cross-origin" 
+                                allow="autoplay"
                                 allowFullScreen
                             />
                         </div>
