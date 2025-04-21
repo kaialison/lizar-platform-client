@@ -15,7 +15,7 @@ export default async function Layout({ children }: LayoutProps) {
         <main>
           {children}
         </main>
-    <Footer />
+        <Footer />
       </div>
     </NextUIProvider>
   );

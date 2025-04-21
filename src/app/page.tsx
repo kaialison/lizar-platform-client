@@ -1,8 +1,8 @@
-import SsrLayout from "./SsrLayout";
 import HomePage from "@/templates/HomePage";
 import { makeSrsRequest } from "./makeSrsRequest";
 import { API_PATHS } from "@/constants/apis";
 import { PAGINATION_PARAMS } from "@/constants";
+import Layout from "@/components/layouts/layout";
 export default async function Home() {
 
   const params = {
@@ -16,8 +16,8 @@ export default async function Home() {
   });
   locationRes = response?.result;
   return (
-    <SsrLayout>
-      <HomePage location={locationRes} />
-    </SsrLayout>
+    <Layout>
+          <HomePage location={locationRes} />
+    </Layout>
   );
 }
