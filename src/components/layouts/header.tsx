@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useReducer, useRef } from "react";
 import { usePathname } from "next/navigation";
 import {
     useDisclosure,
@@ -27,114 +27,143 @@ type HeaderProps = {
     defaultColorScheme?: 'dark' | 'light';
 };
 
+// Header state and reducer
+type HeaderState = {
+    isScrolled: boolean;
+    variant: 'dark' | 'light' | undefined;
+    headerScheme: 'dark' | 'light';
+    menuOpen: boolean;
+    activeDropdown: string | null;
+};
+
+type HeaderAction = 
+    | { type: 'SET_SCROLL_STATE'; payload: boolean }
+    | { type: 'SET_VARIANT'; payload: 'dark' | 'light' | undefined }
+    | { type: 'SET_SCHEME'; payload: 'dark' | 'light' }
+    | { type: 'TOGGLE_MENU'; payload: boolean }
+    | { type: 'TOGGLE_DROPDOWN'; payload: string }
+    | { type: 'UPDATE_ALL'; payload: Partial<HeaderState> };
+
+const headerReducer = (state: HeaderState, action: HeaderAction): HeaderState => {
+    switch (action.type) {
+        case 'SET_SCROLL_STATE':
+            return { ...state, isScrolled: action.payload };
+        case 'SET_VARIANT':
+            return { ...state, variant: action.payload };
+        case 'SET_SCHEME':
+            return { ...state, headerScheme: action.payload };
+        case 'TOGGLE_MENU':
+            return { ...state, menuOpen: action.payload };
+        case 'TOGGLE_DROPDOWN':
+            return { 
+                ...state, 
+                activeDropdown: state.activeDropdown === action.payload ? null : action.payload 
+            };
+        case 'UPDATE_ALL':
+            return { ...state, ...action.payload };
+        default:
+            return state;
+    }
+};
+
 const Header = ({ 
     variant: initialVariant, 
     defaultColorScheme = 'dark' 
 }: HeaderProps): JSX.Element => {
-    const { isOpen, onOpenChange } = useDisclosure();
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-    const [variant, setVariant] = useState(initialVariant);
+    const { isOpen } = useDisclosure();
     const pathname = usePathname();
-    const [isScrolled, setIsScrolled] = useState(false);
-
-    // Kiểm tra header scheme từ EmptyContent
-    const [headerScheme, setHeaderScheme] = useState(defaultColorScheme);
-
-    useEffect(() => {
-        // Immediate check on mount and route change
-        const checkHeaderScheme = () => {
+    const prevPathRef = useRef(pathname);
+    
+    // Initialize state with useReducer
+    const [state, dispatch] = useReducer(headerReducer, {
+        isScrolled: false,
+        variant: initialVariant,
+        headerScheme: defaultColorScheme,
+        menuOpen: false,
+        activeDropdown: null
+    });
+    
+    // Combined effect for handling all header state changes
+    useLayoutEffect(() => {
+        const updateHeaderState = () => {
+            const isAtTop = window.scrollY === 0;
+            const isHomePage = pathname === '/';
+            const isScrolled = !(isAtTop && isHomePage);
+            
+            // Check for header scheme from DOM
             const emptyContent = document.querySelector('[data-header-scheme]');
-            if (emptyContent) {
-                const scheme = emptyContent.getAttribute('data-header-scheme') as 'dark' | 'light';
-                setHeaderScheme(scheme);
+            const headerScheme = emptyContent 
+                ? (emptyContent.getAttribute('data-header-scheme') as 'dark' | 'light') 
+                : defaultColorScheme;
+            
+            // Determine variant based on scroll position and menu state
+            let variant = initialVariant;
+            if (state.menuOpen) {
+                variant = 'light';
             } else {
-                setHeaderScheme(defaultColorScheme);
-            }
-        };
-
-        // Run immediately
-        checkHeaderScheme();
-
-        // Also run on next tick to catch any React hydration updates
-        const immediateCheck = setTimeout(checkHeaderScheme, 0);
-        
-        // Run again after a short delay to catch any lazy-loaded content
-        const delayedCheck = setTimeout(checkHeaderScheme, 50);
-
-        return () => {
-            clearTimeout(immediateCheck);
-            clearTimeout(delayedCheck);
-        };
-    }, [defaultColorScheme, pathname]);
-
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const isAtTop = window.scrollY === 0 && pathname === '/';
-            setIsScrolled(!isAtTop);
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    useEffect(() => {
-        const checkPosition = () => {
-            if (menuOpen) {
-                setVariant('light');
-                return;
+                variant = isAtTop ? initialVariant : 'light';
             }
             
-            const isAtTop = window.scrollY === 0;
-            setVariant(isAtTop ? initialVariant : 'light');
+            // Update all state at once to prevent multiple renders
+            dispatch({ 
+                type: 'UPDATE_ALL', 
+                payload: { 
+                    isScrolled,
+                    headerScheme,
+                    variant
+                } 
+            });
         };
-
-        checkPosition();
-        window.addEventListener('scroll', checkPosition);
-        return () => window.removeEventListener('scroll', checkPosition);
-    }, [initialVariant, menuOpen]);
-
-    // Xử lý menu mobile
-    const toggleMenu = () => {
-        const newMenuState = !menuOpen;
-        setMenuOpen(newMenuState);
-        // Khi mở menu, chuyển sang light mode
-        if (newMenuState) {
-            setVariant('light');
-        } else {
-            // Khi đóng menu, kiểm tra lại điều kiện để set variant phù hợp
-            const isAtTop = window.scrollY === 0 && pathname === '/';
-            setVariant(isAtTop ? initialVariant : 'light');
-        }
-    };
-
-    const toggleDropdown = (name: string) => {
-        setActiveDropdown((prev) => (prev === name ? null : name));
-    };
-
-    useEffect(() => {
-        if (isOpen) {
-            setActiveDropdown(null);
-        }
-    }, [menuOpen]);
-
-    // Control body scroll when mobile menu is open
-    useEffect(() => {
-        if (menuOpen) {
+        
+        // Run immediately on mount and route change
+        updateHeaderState();
+        
+        // Add scroll listener
+        window.addEventListener('scroll', updateHeaderState);
+        
+        // Handle body scroll lock for mobile menu
+        if (state.menuOpen) {
             document.body.style.overflow = 'hidden';
             document.body.style.height = '100vh';
         } else {
             document.body.style.overflow = 'unset';
             document.body.style.height = 'auto';
         }
-
+        
+        // Check if pathname changed
+        if (prevPathRef.current !== pathname) {
+            // Force immediate update on route change
+            updateHeaderState();
+            prevPathRef.current = pathname;
+        }
+        
         return () => {
+            window.removeEventListener('scroll', updateHeaderState);
             document.body.style.overflow = 'unset';
             document.body.style.height = 'auto';
         };
-    }, [menuOpen]);
-
+    }, [initialVariant, defaultColorScheme, pathname, state.menuOpen]);
+    
+    // Handle menu toggle
+    const toggleMenu = () => {
+        const newMenuState = !state.menuOpen;
+        dispatch({ type: 'TOGGLE_MENU', payload: newMenuState });
+        
+        // Update variant immediately
+        if (newMenuState) {
+            dispatch({ type: 'SET_VARIANT', payload: 'light' });
+        } else {
+            const isAtTop = window.scrollY === 0 && pathname === '/';
+            dispatch({ type: 'SET_VARIANT', payload: isAtTop ? initialVariant : 'light' });
+        }
+    };
+    
+    // Handle dropdown toggle
+    const toggleDropdown = (name: string) => {
+        dispatch({ type: 'TOGGLE_DROPDOWN', payload: name });
+    };
+    
+    // Memoize header items to prevent unnecessary re-renders
     const headerItems: HeaderItem[] = useMemo(
         () => [
             { name: "Về HappyLand", link: "/about" },
@@ -149,17 +178,17 @@ const Header = ({
     );
 
     return (
-        <header className="fixed top-0 z-40 w-full transition-colors duration-200 ">
+        <header className="fixed top-0 z-40 w-full transition-colors duration-200">
             <div className={`border-b ${
-                variant === 'light' ? `${menuOpen ? 'bg-white' : 'bg-white/70 backdrop-blur-md'} border-gray-200` : 
-                variant === 'dark' ? 'bg-black border-gray-800' : 
+                state.variant === 'light' ? `${state.menuOpen ? 'bg-white' : 'bg-white/70 backdrop-blur-md'} border-gray-200` : 
+                state.variant === 'dark' ? 'bg-black border-gray-800' : 
                 'border-transparent'
             }`}>
                 <div className="container">
                     <div className="flex h-20 items-center">
                         <div className="flex w-full items-center justify-between">
                             <Link href="/" className="flex items-center gap-2">
-                                {(variant === 'light' || (!variant && headerScheme === 'light')) ? (
+                                {(state.variant === 'light' || (!state.variant && state.headerScheme === 'light')) ? (
                                     <img className="w-[177.5px] h-[40px]" src="/Logo-dark.svg" alt="HappyLand Pickleball" />
                                 ) : (
                                     <img className="w-[177.5px] h-[40px]" src="/Logo.svg" alt="HappyLand Pickleball" />
@@ -171,7 +200,7 @@ const Header = ({
                                         key={item.name}
                                         href={item.link}
                                         className={`text-md font-semibold ${
-                                            variant === 'dark' || (!variant && headerScheme === 'dark') ? 'text-white' : 
+                                            state.variant === 'dark' || (!state.variant && state.headerScheme === 'dark') ? 'text-white' : 
                                             'text-gray-900'
                                         } transition-colors`}
                                     >
@@ -185,11 +214,11 @@ const Header = ({
                             isIconOnly
                             variant="light"
                             className={`lg:hidden ${
-                                variant === 'dark' || (!variant && headerScheme === 'dark') ? 'text-white' : 
+                                state.variant === 'dark' || (!state.variant && state.headerScheme === 'dark') ? 'text-white' : 
                                 'text-primary-900 hover:text-gray-900'
                             }`}
                         >
-                            {menuOpen ? (
+                            {state.menuOpen ? (
                                 <X size={24} weight="bold" className="transition-transform duration-200" />
                             ) : (
                                 <List size={24} weight="bold" className="transition-transform duration-200" />
@@ -200,7 +229,7 @@ const Header = ({
             </div>
 
             {/* Mobile menu */}
-            {menuOpen && (
+            {state.menuOpen && (
                 <div className="lg:hidden fixed inset-x-0 bottom-0 top-20 bg-white overflow-y-auto">
                     <nav className="container py-4 h-full">
                         {headerItems.map((item) => (
