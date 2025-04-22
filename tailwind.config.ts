@@ -171,7 +171,7 @@ const config: Config = {
       },
       borderColor: {
         error: '#FF3B30',
-        primary: '#C60001',
+        primary: '#26A4E3',
         secondary: '#E4E7EC'  // Add this line
       },
       flex: {

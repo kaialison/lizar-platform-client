@@ -11,14 +11,15 @@
   @font-face {
     font-family: 'SF Pro Display';
     src: local('SF Pro Display'),
-         local('SFProDisplay-Regular'),
-         local('-apple-system');
+      local('SFProDisplay-Regular'),
+      local('-apple-system');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
   }
 
-  html, body {
+  html,
+  body {
     @apply h-full p-0 m-0;
   }
 
@@ -66,4 +67,12 @@
 
 .f-inter-bold {
   @apply font-sf-pro font-bold;
+}
+
+[data-focus] {
+  outline: none;
+}
+
+.dark [data-focus] {
+  border-color: transparent;
 }
