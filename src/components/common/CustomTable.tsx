@@ -18,6 +18,7 @@ interface CustomTableProps<T> {
   sortDescriptor?: SortDescriptor;
   onSortChange?: (descriptor: SortDescriptor) => void;
   classNames?: TableProps["classNames"];
+  emptyContent?: ReactNode; // Add this prop
 }
 
 export function CustomTable<T>({
@@ -26,8 +27,17 @@ export function CustomTable<T>({
   renderCell,
   sortDescriptor,
   onSortChange,
-  classNames
+  classNames,
+  emptyContent = "No data found" // Default message
 }: CustomTableProps<T>) {
+  if (data.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center text-default-400">
+        <p className="text-lg">{emptyContent}</p>
+      </div>
+    );
+  }
+
   return (
     <Table
       aria-label="Data table"
