@@ -26,14 +26,13 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
-
     return (
-        <aside className="h-full bg-white flex flex-col justify-between">
+        <aside className="h-full bg-white dark:bg-black flex flex-col justify-between">
             <div>
                 <div className="flex items-center pb-8">
                     <img src="/images/logo.svg" alt="Logo" />
                     <div className="ml-auto">
-                        <Menu size={24} />
+                        <Menu size={24} className="text-gray-900 dark:text-white" />
                     </div>
                 </div>
                 <nav className="space-y-2">
@@ -70,11 +69,10 @@ const SidebarItem = ({
     return (
         <Link href={href}>
             <div
-                className={`flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer transition ${active ? "bg-gray-100 font-medium" : "hover:bg-gray-50"
-                    }`}
+                className={`flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer transition ${active ? "bg-gray-100 dark:bg-gray-700 font-medium" : "hover:bg-gray-50 dark:hover:bg-gray-600"}`}
             >
                 {icon}
-                <span>{label}</span>
+                <span className="text-gray-900 dark:text-white">{label}</span>
             </div>
         </Link>
     );
@@ -90,13 +88,13 @@ const KpiCard = ({
     percent: number;
 }) => {
     return (
-        <div className="border-1 border-neutral-200 rounded-xl p-4 space-y-2 shadow">
-            <div className="text-secondary-900 font-semibold text-base">{label}</div>
+        <div className="border-1 border-neutral-200 dark:border-neutral-600 rounded-xl p-4 space-y-2 shadow dark:bg-gray-700">
+            <div className="text-secondary-900 dark:text-white font-semibold text-base">{label}</div>
             <div className="flex justify-between">
-                <div className="text-sm text-secondary-900 font-medium">{value}</div>
-                <div className="text-sm text-secondary-900 font-medium">{percent}%</div>
+                <div className="text-sm text-secondary-900 dark:text-white font-medium">{value}</div>
+                <div className="text-sm text-secondary-900 dark:text-white font-medium">{percent}%</div>
             </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                 <div
                     className="h-full rounded-full"
                     style={{

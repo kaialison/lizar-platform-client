@@ -71,7 +71,7 @@ export default function Header() {
                     disableAnimation
                     className="max-w-sm"
                     classNames={{
-                        inputWrapper: "bg-white dark:bg-[#333333] shadow-none border-1 border-neutral-200 dark:border-neutral-600 hover:bg-transparent focus:outline-none",
+                        inputWrapper: "bg-white dark:bg-[#333333] shadow-none border-1 border-neutral-200 dark:border-neutral-600 hover:bg-transparent focus:border-neutral-200 data-[focus=true]:bg-white dark:data-[focus=true]:bg-[#333333]",
                         input: "text-secondary-500 text-base hover:bg-transparent focus:outline-none dark:text-white dark:border-neutral-600 dark:bg-transparent"
                     }}
                 />
