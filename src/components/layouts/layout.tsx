@@ -10,13 +10,15 @@ interface LayoutProps {
 export default async function Layout({ children }: LayoutProps) {
   return (
     <NextUIProvider>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen grid grid-cols-5">
+        <div className="col-span-1">
         <Header />
-        <main>
+        </div>
+        <main className="col-span-4">
           {children}
         </main>
-        <Footer />
       </div>
+
     </NextUIProvider>
   );
-} 
+}

@@ -104,6 +104,12 @@ const config: Config = {
       colors: {
         primary: '#58D699',
         danger: '#58D699',
+        tertiary:{
+          600: '#485466',
+        },
+        brand: {
+          solid: '#2395CF'  // Add this color definition
+        },
         app: {
           main: {
             DEFAULT: '#16B364',
@@ -117,6 +123,7 @@ const config: Config = {
           }
         },
         secondary: {
+          DEFAULT: '#F9FAFB',  // Add this line for bg-secondary
           100: '#F2F4F7',
           200: '#E4E7EC',
           300: '#D0D5DD',
@@ -142,10 +149,30 @@ const config: Config = {
           1000: '#262626',
           focus: '#0077FF',
         },
+        utility: {
+          success: {
+            50: '#ECFDF3',
+            200:'#ABEFC6',
+            700:'#067647'
+          },
+          grey:{
+            50: '#F9FAFB',
+            200:'#E4E7EC',
+            700:'#344054'
+          },
+          pink:{
+            50: '#FDF2FA',
+            200:'#FCCEEE',
+            700:'#C11574'
+
+          }
+
+        },
       },
       borderColor: {
         error: '#FF3B30',
         primary: '#C60001',
+        secondary: '#E4E7EC'  // Add this line
       },
       flex: {
         '2': '2 2 0%',
@@ -217,4 +244,4 @@ const config: Config = {
   ],
 } as Config;
 
-export default config; 
+export default config;
